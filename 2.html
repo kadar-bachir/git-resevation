@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Réservation de Terrains de Football</title>
+    <link rel="stylesheet" href="2.css">
+   
+  
+    <style>
+    </style>
+</head>
+<body>
+ 
+    <!-- Hero Section -->
+   
+    <section class="hero" id="accueil">
+        <div class="hero-content">
+            <h1>Réservez votre terrain de sport</h1>
+            <p>Simple, rapide et pratique - Trouvez le terrain parfait pour votre activité sportive</p>
+            <a href="#reservation" class="btn btn-primary">Réserver maintenant</a>
+        </div>
+    </section>
+ 
+
+    <!-- Features Section -->
+    <form method="post" action="4.php">
+    <section class="booking-section" id="reservation">
+        <div class="form-group">
+            <label for="name">Nom complet</label>
+            <input type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone">Téléphone</label>
+            <input type="tel" name="phone" id="phone" required>
+        </div>
+        <div class="form-group">
+            <label for="commune">Choisissez une commune :</label>
+            <select id="commune" name="commune" onchange="updateTerrains()" required>
+                <option value="" disabled selected>-- Sélectionnez une commune --</option>
+                <option value="boulas">Commune de Boulas</option>
+                <option value="ras_dika">Commune de Ras Dika</option>
+                <option value="balbala">Commune de Balbala</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="terrain">Choisissez un terrain :</label>
+            <select id="terrain" name="terrain" onchange="enableDateTime()" required>
+                <option value="" disabled selected>-- Sélectionnez un terrain --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="date">Date souhaitée :</label>
+            <input type="date" id="date" name="date" required disabled onchange="enableHeure()">
+        </div>
+        <div class="form-group">
+            <label for="heure">Heure</label>
+            <select id="heure" name="heure" required disabled>
+                <option value="">Choisissez un horaire</option>
+                <option value="09:00">09:00</option>
+                <option value="10:00">10:00</option>
+                <option value="11:00">11:00</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
+                <option value="19:00">19:00</option>
+                <option value="20:00">20:00</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="duration">Durée</label>
+            <select id="duration" name="duration" required>
+                <option value="">Sélectionnez une durée</option>
+                <option value="1">1 heure</option>
+                <option value="1.5">1 heure 30</option>
+                <option value="2">2 heures</option>
+            </select>
+        </div>
+            </div>
+         
+          
+           
+           
+           
+             
+    
+               
+    
+              
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Réserver maintenant</button>
+                </div>
+                
+        </form>
+    </section>
+
+   
+   
+       
+   
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>À propos</h3>
+                <p> Plateforme de réservation de terrains sportifs en ligne. Simple, rapide et fiable.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liens rapides</h3>
+                <ul>
+                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#reservation">Réservation</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>Email: kadarbachir46@gmail.com</li>
+                    <li>Téléphone: 77184166</li>
+                    
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script>
+        function updateTerrains() {
+            const commune = document.getElementById('commune').value;
+            const terrains = {
+                boulas: ['Stade municipal', 'Terrain B'],
+                ras_dika: ['Stade Hassan Gouled', 'Terrain D'],
+                balbala: ['Cité Nasibe 1', 'Cité Nasibe 2', 'Al Rahma', 'Terrain du H4','Terrain de balbala 7']
+            };
+
+            const terrainSelect = document.getElementById('terrain');
+            terrainSelect.innerHTML = '';
+
+            if (commune) {
+                terrains[commune].forEach(terrain => {
+                    const option = document.createElement('option');
+                    option.value = terrain;
+                    option.textContent = terrain;
+                    terrainSelect.appendChild(option);
+                });
+            }
+        }
+
+        function enableDateTime() {
+            const terrain = document.getElementById('terrain').value;
+            const dateField = document.getElementById('date');
+            const heureField = document.getElementById('heure');
+
+            if (terrain) {
+                dateField.disabled = false;
+                dateField.value = ''; // Reset the date field
+                heureField.disabled = true; // Keep heure disabled until date is set
+            } else {
+                dateField.disabled = true;
+                heureField.disabled = true;
+            }
+        }
+
+        function enableHeure() {
+            const dateField = document.getElementById('date').value;
+            const heureField = document.getElementById('heure');
+
+            if (dateField) {
+                heureField.disabled = false;
+            } else {
+                heureField.disabled = true;
+            }
+        }
+        // Function to check availability of the selected terrain
+function checkAvailability() {
+  const commune = document.getElementById('commune').value;
+  const terrain = document.getElementById('terrain').value;
+  const date = document.getElementById('date').value;
+  const heure = document.getElementById('heure').value;
+  const duration = parseFloat(document.getElementById('duration').value);
+
+  // Simulated availability data
+  const availability = {
+    boulas: {
+      'Stade municipal': [
+        { date: '2023-05-15', times: ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'] },
+        { date: '2023-05-16', times: ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'] }
+      ],
+      'Terrain B': [
+        { date: '2023-05-15', times: ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'] },
+        { date: '2023-05-16', times: ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'] }
+      ]
+    },
+    // Add availability data for other communes
+  };
+
+  // Check if the selected terrain is available on the chosen date and time
+  const availabilityData = availability[commune]?.[terrain];
+  if (availabilityData) {
+    const availableSlot = availabilityData.find(slot => slot.date === date && slot.times.includes(heure));
+    if (availableSlot) {
+      // Calculate the end time of the booking
+      const endTime = new Date(`${date}T${heure}`);
+      endTime.setHours(endTime.getHours() + Math.floor(duration));
+      endTime.setMinutes(endTime.getMinutes() + (duration % 1) * 60);
+
+      // Check if the end time is still within the available slot
+      const endTimeStr = endTime.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+      if (availableSlot.times.includes(endTimeStr)) {
+        return `Le terrain "${terrain}" est disponible le ${date} de ${heure} à ${endTimeStr}.`;
+      } else {
+        return `Le terrain "${terrain}" n'est pas disponible pour la durée sélectionnée.`;
+      }
+    } else {
+      return `Le terrain "${terrain}" n'est pas disponible le ${date} à ${heure}.`;
+    }
+  } else {
+    return `Aucune information de disponibilité pour le terrain "${terrain}" dans la commune sélectionnée.`;
+  }
+}
+
+    </script>
+</script>
+</body>
+</html>
